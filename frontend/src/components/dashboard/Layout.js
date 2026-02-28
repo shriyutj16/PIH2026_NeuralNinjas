@@ -1,7 +1,3 @@
-/**
- * Layout Component - Main app shell with sidebar
- */
-
 import React from 'react';
 import { Outlet, NavLink, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
@@ -21,11 +17,11 @@ const Layout = () => {
     { path: '/detect/image', icon: '🖼️', label: 'Screenshot Scan' },
     { path: '/detect/transaction', icon: '💳', label: 'Transaction Risk' },
     { path: '/history', icon: '📋', label: 'Fraud History' },
+    { path: '/profile', icon: '👤', label: 'My Profile' },
   ];
 
   return (
     <div className="app-layout">
-      {/* Sidebar */}
       <aside className="sidebar">
         <div className="sidebar-logo">
           <div className="sidebar-logo-icon">🛡️</div>
@@ -48,7 +44,6 @@ const Layout = () => {
             </NavLink>
           ))}
 
-          {/* Admin link - only shown to admins */}
           {user?.role === 'admin' && (
             <>
               <div className="nav-section-title" style={{ marginTop: 12 }}>Administration</div>
@@ -63,12 +58,16 @@ const Layout = () => {
           )}
         </nav>
 
-        {/* User info at bottom */}
         <div className="sidebar-user">
-          <div className="user-avatar">
+          <div
+            className="user-avatar"
+            onClick={() => navigate('/profile')}
+            style={{ cursor: 'pointer' }}
+            title="View Profile"
+          >
             {user?.name?.charAt(0).toUpperCase()}
           </div>
-          <div className="user-info">
+          <div className="user-info" style={{ cursor: 'pointer' }} onClick={() => navigate('/profile')}>
             <div className="user-name">{user?.name}</div>
             <div className="user-role">{user?.role === 'admin' ? '👑 Admin' : '👤 User'}</div>
           </div>
@@ -78,7 +77,6 @@ const Layout = () => {
         </div>
       </aside>
 
-      {/* Main Content */}
       <main className="main-content">
         <Outlet />
       </main>

@@ -1,19 +1,12 @@
-/**
- * Auth Context
- * Global authentication state using React Context API
- */
-
 import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
 
 const AuthContext = createContext(null);
 
-// Configure axios defaults
 const API = axios.create({
   baseURL: 'http://localhost:5000/api'
 });
 
-// Attach JWT to every request
 API.interceptors.request.use((config) => {
   const token = localStorage.getItem('token');
   if (token) config.headers.Authorization = `Bearer ${token}`;
@@ -25,14 +18,10 @@ export const AuthProvider = ({ children }) => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  // Load user from token on mount
   useEffect(() => {
     const token = localStorage.getItem('token');
-    if (token) {
-      loadUser();
-    } else {
-      setLoading(false);
-    }
+    if (token) loadUser();
+    else setLoading(false);
   }, []);
 
   const loadUser = async () => {
@@ -75,13 +64,17 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
+  const updateUser = (updatedUser) => {
+    setUser(prev => ({ ...prev, ...updatedUser }));
+  };
+
   const logout = useCallback(() => {
     localStorage.removeItem('token');
     setUser(null);
   }, []);
 
   return (
-    <AuthContext.Provider value={{ user, loading, error, login, register, logout, API, loadUser }}>
+    <AuthContext.Provider value={{ user, loading, error, login, register, logout, updateUser, API, loadUser }}>
       {children}
     </AuthContext.Provider>
   );

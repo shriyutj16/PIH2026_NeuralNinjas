@@ -10,6 +10,7 @@ import ImageDetection from './components/detection/ImageDetection';
 import TransactionDetection from './components/detection/TransactionDetection';
 import FraudHistory from './components/dashboard/FraudHistory';
 import AdminPanel from './components/admin/AdminPanel';
+import ProfilePage from './components/dashboard/ProfilePage';
 import './styles/global.css';
 
 const ProtectedRoute = ({ children, adminOnly = false }) => {
@@ -45,6 +46,7 @@ function AppRoutes() {
         <Route path="detect/image" element={<ImageDetection />} />
         <Route path="detect/transaction" element={<TransactionDetection />} />
         <Route path="history" element={<FraudHistory />} />
+        <Route path="profile" element={<ProfilePage />} />
         <Route path="admin" element={<ProtectedRoute adminOnly><AdminPanel /></ProtectedRoute>} />
       </Route>
       <Route path="*" element={<Navigate to="/dashboard" replace />} />
