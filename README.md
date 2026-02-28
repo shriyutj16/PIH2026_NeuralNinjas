@@ -14,7 +14,9 @@ Most systems focus on post-fraud complaint registration instead of prevention.
 
 AI Scam & Fraud Shield shifts fraud management from reactive detection to proactive prevention.
 
+
 💡 Key Features
+
 🔍 AI-Based SMS Scam Detection
 
 Uses Gemini AI to detect phishing, smishing, and fraud patterns
@@ -105,17 +107,21 @@ Risk Score =
 70+ → High Risk
 
 🛠 Installation & Setup
+
 1️⃣ Clone the Repository
 git clone https://github.com/shriyutj16/PIH2026_NeuralNinjas.git
 cd PIH2026_NeuralNinjas
+
 2️⃣ Install Dependencies
 npm install
+
 3️⃣ Configure Environment Variables
 
 Create a .env file in root:
 
 GEMINI_API_KEY=your_gemini_api_key
 JWT_SECRET=your_super_secure_secret
+
 4️⃣ Run the Application
 npm run dev
 
