@@ -1,224 +1,170 @@
-# 🛡️ AI Scam & Fraud Shield
+🛡 AI Scam & Fraud Shield
+Real-Time Digital Payment Fraud Prevention Platform
+🚀 Overview
 
-A full-stack MERN application for detecting scams, fraud, and suspicious transactions using AI-powered analysis.
+AI Scam & Fraud Shield is a full-stack AI-powered web application designed to proactively detect and prevent digital fraud before financial loss occurs.
 
----
+Unlike traditional fraud systems that act after damage is done, our platform uses multimodal AI + behavioral risk scoring to generate a real-time Fraud Risk Score and warn users instantly.
 
-## 📁 Project Structure
+🎯 Problem Statement
 
-```
-ai-scam-fraud-shield/
-├── backend/
-│   ├── config/
-│   │   └── db.js                    # MongoDB connection
-│   ├── controllers/
-│   │   ├── authController.js        # JWT auth (login/register)
-│   │   ├── detectionController.js   # Text + image analysis
-│   │   ├── transactionController.js # Transaction risk scoring
-│   │   ├── reportsController.js     # Fraud history & stats
-│   │   └── adminController.js       # Admin panel APIs
-│   ├── middleware/
-│   │   ├── auth.js                  # JWT protect + adminOnly
-│   │   └── upload.js                # Multer file upload
-│   ├── models/
-│   │   ├── User.js                  # Users collection
-│   │   ├── FraudReport.js           # FraudReports collection
-│   │   └── Transaction.js           # Transactions collection
-│   ├── routes/
-│   │   ├── auth.js                  # /api/auth
-│   │   ├── detection.js             # /api/detection
-│   │   ├── transactions.js          # /api/transactions
-│   │   ├── reports.js               # /api/reports
-│   │   └── admin.js                 # /api/admin
-│   ├── utils/
-│   │   ├── scamClassifier.js        # NLP/TF-IDF AI Module
-│   │   └── transactionRiskScorer.js # Rule-based risk engine
-│   ├── uploads/                     # Screenshot storage
-│   ├── server.js                    # Express entry point
-│   ├── seed.js                      # DB seeder
-│   ├── .env.example                 # Environment template
-│   └── package.json
-│
-└── frontend/
-    ├── public/
-    │   └── index.html
-    └── src/
-        ├── components/
-        │   ├── auth/
-        │   │   ├── LoginPage.js     # Login form
-        │   │   └── RegisterPage.js  # Registration form
-        │   ├── dashboard/
-        │   │   ├── Layout.js        # Sidebar + nav wrapper
-        │   │   ├── Dashboard.js     # Main dashboard with charts
-        │   │   └── FraudHistory.js  # Paginated history table
-        │   ├── detection/
-        │   │   ├── RiskResult.js    # Reusable risk score display
-        │   │   ├── TextDetection.js # SMS/text analysis
-        │   │   ├── ImageDetection.js # Screenshot upload
-        │   │   └── TransactionDetection.js # Transaction form
-        │   └── admin/
-        │       └── AdminPanel.js    # Admin overview + user mgmt
-        ├── context/
-        │   └── AuthContext.js       # JWT auth global state
-        ├── styles/
-        │   └── global.css           # Dark theme design system
-        ├── App.js                   # Router + protected routes
-        └── index.js
-```
+With the rapid growth of digital payments (UPI, online banking, wallets), cyber fraud incidents such as phishing SMS, fake payment requests, scam calls, and fraudulent screenshots have increased significantly.
 
----
+Most systems focus on post-fraud complaint registration instead of prevention.
 
-## 🚀 Setup Instructions
+AI Scam & Fraud Shield shifts fraud management from reactive detection to proactive prevention.
 
-### Prerequisites
-- Node.js 18+
-- MongoDB (local or Atlas)
-- npm / yarn
+💡 Key Features
+🔍 AI-Based SMS Scam Detection
 
-### 1. Clone and Install
+Uses Gemini AI to detect phishing, smishing, and fraud patterns
 
-```bash
-# Backend
-cd backend
+Provides risk percentage and explanation
+
+🖼 Image Fraud Analysis
+
+Upload suspicious screenshots
+
+Detect fake payment pages, QR scams, and fraudulent UI patterns
+
+📊 Behavioral Risk Scoring
+
+Transaction simulator
+
+Rule-based risk engine (amount, frequency, time-of-day analysis)
+
+Dynamic Fraud Risk Score generation
+
+📈 Security Dashboard
+
+Total scans
+
+Flagged threats
+
+Average risk levels
+
+Searchable fraud history
+
+🔐 Secure Authentication
+
+JWT-based authentication
+
+Password hashing using bcryptjs
+
+Role-based access (Admin Panel)
+
+🏗 Tech Stack
+Frontend
+
+React
+
+Tailwind CSS
+
+Lucide Icons
+
+Framer Motion
+
+Backend
+
+Node.js
+
+Express.js
+
+JWT Authentication
+
+bcryptjs
+
+Database
+
+SQLite (MVP portability)
+
+Easily scalable to MongoDB Atlas
+
+AI Integration
+
+Google Gemini (Text + Multimodal Image Analysis)
+
+🧠 Architecture
+
+User → React Frontend → Express API →
+• Gemini AI (Text & Image Analysis)
+• Behavioral Risk Engine
+→ SQLite Database → Dashboard
+
+📊 Risk Score Formula (MVP)
+
+Risk Score =
+(Text Scam Probability × 0.5) +
+(Transaction Risk × 0.3) +
+(Image Fraud Probability × 0.2)
+
+0–39 → Low Risk
+
+40–69 → Medium Risk
+
+70+ → High Risk
+
+🛠 Installation & Setup
+1️⃣ Clone the Repository
+git clone https://github.com/shriyutj16/PIH2026_NeuralNinjas.git
+cd PIH2026_NeuralNinjas
+2️⃣ Install Dependencies
 npm install
+3️⃣ Configure Environment Variables
 
-# Frontend
-cd ../frontend
-npm install
-```
+Create a .env file in root:
 
-### 2. Configure Environment
+GEMINI_API_KEY=your_gemini_api_key
+JWT_SECRET=your_super_secure_secret
+4️⃣ Run the Application
+npm run dev
 
-```bash
-cd backend
-cp .env.example .env
-```
+The application will initialize the database automatically on first run.
 
-Edit `.env`:
-```env
-PORT=5000
-MONGO_URI=mongodb://localhost:27017/scam_fraud_shield
-JWT_SECRET=your_secret_key_here
-ADMIN_EMAIL=admin@fraudshield.com
-ADMIN_PASSWORD=Admin@123
-```
+👤 Admin Access
 
-### 3. Seed the Database
+To access Admin Panel:
 
-```bash
-cd backend
-node seed.js
-```
+Manually update user role to admin in the database
+OR
 
-### 4. Start the Servers
+Modify default role in server.ts
 
-```bash
-# Terminal 1 - Backend
-cd backend
-npm run dev       # or: node server.js
+🔐 Security Practices
 
-# Terminal 2 - Frontend
-cd frontend
-npm start
-```
+Environment variables excluded via .gitignore
 
-- Backend runs at: http://localhost:5000
-- Frontend runs at: http://localhost:3000
+JWT-based authentication
 
----
+Password hashing with bcrypt
 
-## 🔑 Login Credentials (After Seeding)
+Secure token verification
 
-| Role  | Email                    | Password   |
-|-------|--------------------------|------------|
-| Admin | admin@fraudshield.com    | Admin@123  |
-| User  | demo@fraudshield.com     | Demo@123   |
+🌍 Future Scope
 
----
+Direct UPI API integration
 
-## 📡 API Endpoints
+Browser extension for real-time link scanning
 
-### Authentication
-| Method | Endpoint           | Description        |
-|--------|--------------------|--------------------|
-| POST   | /api/auth/register | Register new user  |
-| POST   | /api/auth/login    | Login              |
-| GET    | /api/auth/me       | Get current user   |
+Real-time bank transaction monitoring
 
-### Detection
-| Method | Endpoint                 | Description              |
-|--------|--------------------------|--------------------------|
-| POST   | /api/detection/text      | Analyze text for scams   |
-| POST   | /api/detection/image     | Upload + analyze image   |
+AI model fine-tuning with fraud datasets
 
-### Transactions
-| Method | Endpoint                    | Description          |
-|--------|----------------------------|----------------------|
-| POST   | /api/transactions/analyze  | Score transaction risk |
-| GET    | /api/transactions           | Get transaction history|
+Cloud deployment with MongoDB Atlas
 
-### Reports
-| Method | Endpoint             | Description            |
-|--------|----------------------|------------------------|
-| GET    | /api/reports         | Get fraud history      |
-| GET    | /api/reports/stats   | Dashboard statistics   |
-| GET    | /api/reports/:id     | Get single report      |
+🏆 Hackathon Value Proposition
 
-### Admin (Admin only)
-| Method | Endpoint                       | Description         |
-|--------|-------------------------------|---------------------|
-| GET    | /api/admin/stats              | System statistics   |
-| GET    | /api/admin/users              | All users           |
-| GET    | /api/admin/reports            | All reports         |
-| PUT    | /api/admin/users/:id/toggle   | Toggle user status  |
+Proactive fraud prevention
 
----
+Multimodal AI detection
 
-## 🧠 AI Module Architecture
+Hybrid AI + rule-based risk scoring
 
-### Text Scam Classifier (`scamClassifier.js`)
-- **TF-IDF** vectorization via `natural` npm package
-- **Pattern matching** across 6 scam categories (100+ patterns)
-- **Linguistic analysis**: CAPS ratio, exclamation density, URL shorteners
-- **Weighted scoring formula**:
-  ```
-  Score = (Pattern × 50%) + (Linguistic × 25%) + (TF-IDF × 25%) - Legitimate Deductions
-  ```
+Scalable architecture
 
-### Transaction Risk Scorer (`transactionRiskScorer.js`)
-- **5-factor rule-based model**:
-  - Amount Risk (25 pts max)
-  - Frequency/Velocity Risk (20 pts)
-  - Merchant Category Risk (20 pts)
-  - Geographic Risk (20 pts)
-  - Time-of-Day Risk (15 pts)
-- **Combination amplifiers** for compound risk patterns
-- **Formula**: `Score = Σ(factor × weight) / 100 × 100%`
+Real-world financial impact
 
-### Risk Levels
-| Score Range | Level  | Action              |
-|-------------|--------|---------------------|
-| 0-39        | Low    | Safe to proceed     |
-| 40-69       | Medium | Verify before acting|
-| 70-100      | High   | Block / Alert       |
+👥 Team
 
----
-
-## 🔧 Production Enhancements
-
-1. **Real OCR**: Install `tesseract.js` for actual image text extraction
-2. **Better NLP**: Integrate HuggingFace transformers via Python microservice
-3. **Rate limiting**: Add `express-rate-limit` to prevent abuse
-4. **Email alerts**: Send emails on high-risk detection via Nodemailer
-5. **Redis caching**: Cache stats for performance
-6. **HTTPS**: Add SSL for production deployment
-
----
-
-## 🔐 Security Features
-- JWT authentication with token expiry
-- Password hashing (bcryptjs, 12 salt rounds)
-- File type + size validation
-- Route protection middleware
-- Admin-only route guards
-- Input sanitization
+Neural Ninjas 🚀
+(PIH 2026 Hackathon)
