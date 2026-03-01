@@ -58,10 +58,7 @@ const LoginPage = () => {
           Create an Account
         </Link>
 
-        <div className="demo-hint">
-          <strong>Demo Access:</strong><br />
-          admin@fraudshield.com / Admin@123
-        </div>
+        
       </div>
     </div>
   );
