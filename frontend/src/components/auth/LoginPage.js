@@ -1,7 +1,3 @@
-/**
- * Login Page Component
- */
-
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
@@ -15,14 +11,10 @@ const LoginPage = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setLoading(true);
-    setError('');
+    setLoading(true); setError('');
     const result = await login(form.email, form.password);
-    if (result.success) {
-      navigate('/dashboard');
-    } else {
-      setError(result.message);
-    }
+    if (result.success) navigate('/dashboard');
+    else setError(result.message);
     setLoading(false);
   };
 
@@ -32,7 +24,7 @@ const LoginPage = () => {
         <div className="auth-logo">
           <div className="auth-logo-icon">🛡️</div>
           <h1>Fraud Shield</h1>
-          <p>Sign in to your account</p>
+          <p>Sign in to your protected account</p>
         </div>
 
         {error && (
@@ -45,41 +37,30 @@ const LoginPage = () => {
         <form onSubmit={handleSubmit}>
           <div className="form-group">
             <label className="form-label">Email Address</label>
-            <input
-              type="email"
-              className="form-input"
-              placeholder="you@example.com"
-              value={form.email}
-              onChange={e => setForm({ ...form, email: e.target.value })}
-              required
-              autoFocus
-            />
+            <input type="email" className="form-input" placeholder="you@example.com"
+              value={form.email} onChange={e => setForm({ ...form, email: e.target.value })}
+              required autoFocus />
           </div>
           <div className="form-group">
             <label className="form-label">Password</label>
-            <input
-              type="password"
-              className="form-input"
-              placeholder="••••••••"
-              value={form.password}
-              onChange={e => setForm({ ...form, password: e.target.value })}
-              required
-            />
+            <input type="password" className="form-input" placeholder="••••••••"
+              value={form.password} onChange={e => setForm({ ...form, password: e.target.value })}
+              required />
           </div>
-          <button type="submit" className="btn btn-primary btn-full btn-lg" disabled={loading} style={{ marginTop: 8 }}>
+          <button type="submit" className="btn btn-primary btn-full btn-lg"
+            disabled={loading} style={{ marginTop: 8 }}>
             {loading ? <><span className="loading-spinner"></span> Signing in...</> : '🔐 Sign In'}
           </button>
         </form>
 
-        <div className="auth-divider"><span>New to Fraud Shield?</span></div>
+        <div className="auth-divider"><span>New here?</span></div>
         <Link to="/register" className="btn btn-outline btn-full" style={{ justifyContent: 'center' }}>
           Create an Account
         </Link>
 
-        {/* Demo credentials hint */}
-        <div style={{ marginTop: 20, padding: '12px', background: 'rgba(99,102,241,0.08)', borderRadius: 8, fontSize: 12, color: 'var(--text-secondary)' }}>
-          <strong style={{ color: 'var(--primary-light)' }}>Demo Access:</strong><br />
-          Admin: admin@fraudshield.com / Admin@123
+        <div className="demo-hint">
+          <strong>Demo Access:</strong><br />
+          admin@fraudshield.com / Admin@123
         </div>
       </div>
     </div>

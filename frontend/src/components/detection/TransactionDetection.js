@@ -1,8 +1,3 @@
-/**
- * Transaction Detection Component
- * Rule-based risk scoring for financial transactions
- */
-
 import React, { useState } from 'react';
 import { useAuth } from '../../context/AuthContext';
 import RiskResult from './RiskResult';
@@ -27,11 +22,9 @@ const TransactionDetection = () => {
     if (!form.amount || parseFloat(form.amount) <= 0) {
       return setError('Please enter a valid transaction amount');
     }
-
     setLoading(true);
     setError('');
     setResult(null);
-
     try {
       const { data } = await API.post('/transactions/analyze', form);
       setResult(data.result);
@@ -47,7 +40,6 @@ const TransactionDetection = () => {
     setForm({ amount: '', frequency: '1', timeOfDay: 'afternoon', merchantCategory: 'retail', currency: 'USD', isInternational: false, location: 'domestic' });
   };
 
-  // Quick simulation presets
   const presets = [
     { label: '✅ Low Risk', data: { amount: 25, frequency: 1, timeOfDay: 'afternoon', merchantCategory: 'food', isInternational: false } },
     { label: '⚠️ Medium Risk', data: { amount: 800, frequency: 4, timeOfDay: 'evening', merchantCategory: 'online', isInternational: true } },
@@ -68,13 +60,11 @@ const TransactionDetection = () => {
 
       {!result ? (
         <div className="grid-2" style={{ alignItems: 'start' }}>
-          {/* Transaction Form */}
           <div className="card">
             <div className="card-header">
               <h3 className="card-title">💰 Transaction Details</h3>
             </div>
 
-            {/* Quick Presets */}
             <div style={{ marginBottom: 20 }}>
               <div style={{ fontSize: 12, color: 'var(--text-muted)', marginBottom: 8 }}>Quick Test Presets:</div>
               <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
@@ -173,7 +163,6 @@ const TransactionDetection = () => {
             </form>
           </div>
 
-          {/* Risk Formula Info */}
           <div className="card">
             <div className="card-header">
               <h3 className="card-title">🧮 Risk Scoring Formula</h3>
@@ -189,24 +178,21 @@ const TransactionDetection = () => {
                 { factor: 'Geographic Risk', weight: 20, icon: '🌍', desc: 'International/VPN = elevated' },
                 { factor: 'Time of Day', weight: 15, icon: '🕐', desc: 'Night transactions = riskier' },
               ].map((item, i) => (
-                <div key={i} style={{ display: 'flex', alignItems: 'center', gap: 12, padding: '10px 12px', background: 'var(--bg-primary)', borderRadius: 8 }}>
+                <div key={i} style={{ display: 'flex', alignItems: 'center', gap: 12, padding: '10px 12px', background: 'var(--obsidian-2)', borderRadius: 8 }}>
                   <span style={{ fontSize: 18 }}>{item.icon}</span>
                   <div style={{ flex: 1 }}>
                     <div style={{ fontSize: 13, fontWeight: 500, color: 'var(--text-primary)' }}>{item.factor}</div>
                     <div style={{ fontSize: 11, color: 'var(--text-muted)' }}>{item.desc}</div>
                   </div>
-                  <div style={{
-                    background: 'rgba(99,102,241,0.15)', color: 'var(--primary-light)',
-                    padding: '2px 8px', borderRadius: 4, fontSize: 12, fontWeight: 700
-                  }}>
+                  <div style={{ background: 'rgba(0,212,255,0.1)', color: 'var(--electric)', padding: '2px 8px', borderRadius: 4, fontSize: 12, fontWeight: 700 }}>
                     {item.weight}%
                   </div>
                 </div>
               ))}
             </div>
 
-            <div style={{ marginTop: 16, padding: 12, background: 'var(--bg-primary)', borderRadius: 8, fontSize: 12, color: 'var(--text-muted)', fontFamily: 'monospace' }}>
-              <strong style={{ color: 'var(--primary-light)' }}>Formula:</strong><br />
+            <div style={{ marginTop: 16, padding: 12, background: 'var(--obsidian-2)', borderRadius: 8, fontSize: 12, color: 'var(--text-muted)', fontFamily: 'monospace' }}>
+              <strong style={{ color: 'var(--electric)' }}>Formula:</strong><br />
               Score = Σ(factor × weight) / 100<br />
               + Amplifiers for combined risks<br />
               → Capped at 0-100%
@@ -215,7 +201,6 @@ const TransactionDetection = () => {
         </div>
       ) : (
         <div>
-          {/* Show transaction summary */}
           <div className="card" style={{ marginBottom: 16 }}>
             <div style={{ display: 'flex', gap: 24, flexWrap: 'wrap' }}>
               <div>
