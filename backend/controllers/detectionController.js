@@ -1,6 +1,7 @@
 /**
  * Detection Controller
- * Text SMS scam detection and REAL OCR-based image analysis
+ * Handles text SMS scam detection and image upload analysis
+ * Uses Gemini AI as primary engine with local fallback
  */
 
 const FraudReport = require('../models/FraudReport');
@@ -10,7 +11,7 @@ const Tesseract = require('tesseract.js');
 const path = require('path');
 const fs = require('fs');
 
-// @desc    Analyze text for scams
+// @desc    Analyze text for scams (SMS, email, etc.)
 // @route   POST /api/detection/text
 // @access  Private
 exports.analyzeText = async (req, res) => {
@@ -25,8 +26,10 @@ exports.analyzeText = async (req, res) => {
       return res.status(400).json({ success: false, message: 'Text too long (max 5000 chars)' });
     }
 
-    const classification = scamClassifier.classify(text);
+    // Run Gemini AI classification (with local fallback)
+    const classification = await scamClassifier.classify(text);
 
+    // Save fraud report to DB
     const report = await FraudReport.create({
       user: req.user.id,
       type: 'text',
@@ -43,6 +46,7 @@ exports.analyzeText = async (req, res) => {
       userAgent: req.headers['user-agent']
     });
 
+    // Update user stats
     await User.findByIdAndUpdate(req.user.id, {
       $inc: {
         totalScans: 1,
@@ -53,6 +57,7 @@ exports.analyzeText = async (req, res) => {
     res.status(201).json({
       success: true,
       reportId: report._id,
+      engine: classification.engine || 'local',
       result: {
         label: classification.label,
         riskScore: classification.riskScore,
@@ -60,6 +65,7 @@ exports.analyzeText = async (req, res) => {
         confidence: classification.confidence,
         patterns: classification.patterns,
         explanation: classification.explanation,
+        recommendation: classification.recommendation,
         breakdown: classification.breakdown
       }
     });
@@ -68,7 +74,7 @@ exports.analyzeText = async (req, res) => {
   }
 };
 
-// @desc    Upload and analyze screenshot using REAL OCR
+// @desc    Upload and analyze screenshot using OCR + Gemini AI
 // @route   POST /api/detection/image
 // @access  Private
 exports.analyzeImage = async (req, res) => {
@@ -105,27 +111,25 @@ exports.analyzeImage = async (req, res) => {
       extractedText = '';
     }
 
-    // ==================== ANALYSIS ====================
+    // ==================== AI ANALYSIS ====================
     let classification;
     let analysisNote = '';
 
     if (extractedText && extractedText.trim().length > 10) {
-      // Analyze the OCR-extracted text
-      classification = scamClassifier.classify(extractedText);
+      // Analyze OCR-extracted text with Gemini AI
+      classification = await scamClassifier.classify(extractedText);
       analysisNote = `OCR extracted ${extractedText.length} characters with ${ocrConfidence}% confidence.`;
 
-      // Boost score if OCR confidence is low (blurry images are suspicious)
+      // Slight boost if OCR confidence is low (blurry images can be suspicious)
       if (ocrConfidence < 50 && ocrConfidence > 0) {
         classification.riskScore = Math.min(classification.riskScore + 5, 100);
         analysisNote += ' Low OCR confidence — image may be blurred or altered.';
       }
     } else {
-      // Fallback: analyze filename + give moderate score for unreadable images
+      // Fallback: assign moderate score if no text found
       console.log('⚠️ OCR could not extract text, using fallback analysis');
       const fallbackText = `image file ${originalName}`;
-      classification = scamClassifier.classify(fallbackText);
-
-      // If image has no readable text, assign a base suspicious score
+      classification = await scamClassifier.classify(fallbackText);
       classification.riskScore = Math.max(classification.riskScore, 20);
       classification.riskLevel = classification.riskScore >= 65 ? 'High' : classification.riskScore >= 35 ? 'Medium' : 'Low';
       classification.label = classification.riskScore >= 35 ? 'SCAM' : 'NOT_SCAM';
@@ -136,7 +140,7 @@ exports.analyzeImage = async (req, res) => {
     const suspiciousFilenames = ['scam', 'phish', 'fake', 'spam', 'fraud', 'prize', 'win', 'lottery', 'hack'];
     if (suspiciousFilenames.some(w => originalName.toLowerCase().includes(w))) {
       classification.riskScore = Math.min(classification.riskScore + 10, 100);
-      classification.patterns.push('filename: suspicious filename detected');
+      classification.patterns = [...(classification.patterns || []), 'filename: suspicious filename detected'];
     }
 
     // Recalculate risk level after boosts
@@ -164,6 +168,7 @@ exports.analyzeImage = async (req, res) => {
       userAgent: req.headers['user-agent']
     });
 
+    // Update user stats
     await User.findByIdAndUpdate(req.user.id, {
       $inc: {
         totalScans: 1,
@@ -175,15 +180,18 @@ exports.analyzeImage = async (req, res) => {
       success: true,
       reportId: report._id,
       imageUrl: `/uploads/${imagePath}`,
-      extractedText: extractedText.slice(0, 500), // send back extracted text
+      extractedText: extractedText.slice(0, 500),
       ocrConfidence,
+      engine: classification.engine || 'local',
       result: {
         label: classification.label,
         riskScore: classification.riskScore,
         riskLevel: classification.riskLevel,
         confidence: classification.confidence || 75,
         patterns: classification.patterns,
-        explanation: `${analysisNote} ${classification.explanation}`
+        explanation: `${analysisNote} ${classification.explanation}`,
+        recommendation: classification.recommendation,
+        breakdown: classification.breakdown
       }
     });
 
