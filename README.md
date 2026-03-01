@@ -1,41 +1,94 @@
 🛡 AI Scam & Fraud Shield
-Real-Time Digital Payment Fraud Prevention Platform
+Real-Time AI-Powered Digital Fraud Prevention Platform
+
+🚀 Proactive fraud prevention using Multimodal AI + Behavioral Risk Scoring
+
+🌍 Live Demo
+
+🔗 Frontend: https://pih-2026-neural-ninjas.vercel.app
+
+🔗 Backend API: https://ai-scam-fraud-shield-backend.onrender.com
+
 🚀 Overview
 
-AI Scam & Fraud Shield is a full-stack AI-powered web application designed to proactively detect and prevent digital fraud before financial loss occurs.
+AI Scam & Fraud Shield is a full-stack AI-powered fraud prevention platform built to detect and prevent digital payment scams before financial damage occurs.
 
-Unlike traditional fraud systems that act after damage is done, our platform uses multimodal AI + behavioral risk scoring to generate a real-time Fraud Risk Score and warn users instantly.
+Unlike traditional fraud systems that act after the loss, our solution:
+
+Detects scam patterns in real-time
+
+Analyzes suspicious screenshots
+
+Evaluates behavioral transaction risks
+
+Generates a dynamic Fraud Risk Score
+
+Warns users instantly
+
+This shifts fraud management from reactive detection → proactive prevention.
+
 
 🎯 Problem Statement
 
-With the rapid growth of digital payments (UPI, online banking, wallets), cyber fraud incidents such as phishing SMS, fake payment requests, scam calls, and fraudulent screenshots have increased significantly.
+With the exponential growth of:
 
-Most systems focus on post-fraud complaint registration instead of prevention.
+-UPI transactions
 
-AI Scam & Fraud Shield shifts fraud management from reactive detection to proactive prevention.
+-Online banking
 
+-Digital wallets
 
-💡 Key Features
+-QR payments
 
+-Cyber fraud cases (phishing, smishing, fake payment pages, scam screenshots) are increasing rapidly.
+
+Most systems:
+
+❌ Register complaints after fraud
+❌ Provide no real-time prevention
+
+Our solution focuses on:
+
+✅ Real-time detection
+✅ Instant risk scoring
+✅ User-level fraud prevention
+
+💡 Core Features
 🔍 AI-Based SMS Scam Detection
 
-Uses Gemini AI to detect phishing, smishing, and fraud patterns
+Gemini AI powered text analysis
 
-Provides risk percentage and explanation
+Detects phishing & smishing patterns
 
-🖼 Image Fraud Analysis
+Provides scam probability %
+
+Explains why message is risky
+
+🖼 Image Fraud Analysis (Multimodal AI)
 
 Upload suspicious screenshots
 
-Detect fake payment pages, QR scams, and fraudulent UI patterns
+Detect fake UPI pages
 
-📊 Behavioral Risk Scoring
+Identify QR fraud layouts
+
+Analyze visual scam indicators
+
+📊 Behavioral Risk Scoring Engine
 
 Transaction simulator
 
-Rule-based risk engine (amount, frequency, time-of-day analysis)
+Rule-based fraud engine
 
-Dynamic Fraud Risk Score generation
+Evaluates:
+
+Transaction amount
+
+Frequency
+
+Time-of-day anomalies
+
+Generates dynamic Fraud Risk Score
 
 📈 Security Dashboard
 
@@ -43,30 +96,48 @@ Total scans
 
 Flagged threats
 
-Average risk levels
+Risk trend tracking
 
 Searchable fraud history
+
+Admin analytics panel
 
 🔐 Secure Authentication
 
 JWT-based authentication
 
-Password hashing using bcryptjs
+Password hashing with bcrypt
 
-Role-based access (Admin Panel)
+Role-based access control (Admin/User)
+
+Secure token verification
+
+🧠 Risk Score Formula (MVP)
+Risk Score =
+(Text Scam Probability × 0.5) +
+(Transaction Risk × 0.3) +
+(Image Fraud Probability × 0.2)
+Score Range	Risk Level
+0–39	Low Risk
+40–69	Medium Risk
+70+	High Risk
+
 
 🏗 Tech Stack
-Frontend
+Frontend:
 
 React
 
 Tailwind CSS
 
-Lucide Icons
-
 Framer Motion
 
-Backend
+Lucide Icons
+
+Axios
+
+
+Backend:
 
 Node.js
 
@@ -76,39 +147,44 @@ JWT Authentication
 
 bcryptjs
 
-Database
+CORS
+
+Multer
+
+
+Database:
+
+MongoDB Atlas (Production)
 
 SQLite (MVP portability)
 
-Easily scalable to MongoDB Atlas
 
-AI Integration
+AI Integration:
 
-Google Gemini (Text + Multimodal Image Analysis)
+Google Gemini API
 
-🧠 Architecture
+Text analysis
 
-User → React Frontend → Express API →
-• Gemini AI (Text & Image Analysis)
+Multimodal image analysis
+
+
+🧠 System Architecture
+User
+   ↓
+React Frontend (Vercel)
+   ↓
+Express Backend (Render)
+   ↓
+• Gemini AI (Text + Image)
 • Behavioral Risk Engine
-→ SQLite Database → Dashboard
+   ↓
+MongoDB Atlas
+   ↓
+Dashboard + Risk Insights
 
-📊 Risk Score Formula (MVP)
+🛠 Local Installation:
 
-Risk Score =
-(Text Scam Probability × 0.5) +
-(Transaction Risk × 0.3) +
-(Image Fraud Probability × 0.2)
-
-0–39 → Low Risk
-
-40–69 → Medium Risk
-
-70+ → High Risk
-
-🛠 Installation & Setup
-
-1️⃣ Clone the Repository
+1️⃣ Clone Repository
 git clone https://github.com/shriyutj16/PIH2026_NeuralNinjas.git
 cd PIH2026_NeuralNinjas
 
@@ -117,60 +193,76 @@ npm install
 
 3️⃣ Configure Environment Variables
 
-Create a .env file in root:
+Create a .env file:
 
 GEMINI_API_KEY=your_gemini_api_key
-JWT_SECRET=your_super_secure_secret
+JWT_SECRET=your_secure_secret
+MONGO_URI=your_mongodb_connection_string
+NODE_ENV=development
+CLIENT_URL=http://localhost:5173
 
-4️⃣ Run the Application
+4️⃣ Run Application
 npm run dev
 
-The application will initialize the database automatically on first run.
+🌍 Production Deployment
+Frontend → Vercel
+Backend → Render
+Database → MongoDB Atlas
 
-👤 Admin Access
+Environment variables are configured securely on cloud platforms.
 
-To access Admin Panel:
-
-Manually update user role to admin in the database
-OR
-
-Modify default role in server.ts
-
-🔐 Security Practices
+🔐 Security Best Practices
 
 Environment variables excluded via .gitignore
 
-JWT-based authentication
+JWT secure authentication
 
-Password hashing with bcrypt
+bcrypt password hashing
 
-Secure token verification
+CORS origin restriction
 
-🌍 Future Scope
+Token-based route protection
+
+Role-based authorization
+
+📊 Real-World Impact
+
+Prevent financial loss before it occurs
+
+Reduce phishing success rates
+
+Assist users in identifying fake payment interfaces
+
+Enhance digital payment safety
+
+Scalable to banking-grade infrastructure
+
+🌟 Future Scope
 
 Direct UPI API integration
 
-Browser extension for real-time link scanning
+Browser extension for link scanning
 
 Real-time bank transaction monitoring
 
-AI model fine-tuning with fraud datasets
+AI fine-tuning with fraud datasets
 
-Cloud deployment with MongoDB Atlas
+Bank & fintech integration APIs
+
+Mobile application version
+
+Enterprise fraud analytics dashboard
 
 🏆 Hackathon Value Proposition
 
-Proactive fraud prevention
-
-Multimodal AI detection
-
-Hybrid AI + rule-based risk scoring
-
-Scalable architecture
-
-Real-world financial impact
+✔ Proactive fraud prevention
+✔ Multimodal AI integration
+✔ Hybrid AI + rule-based risk scoring
+✔ Real-time scoring engine
+✔ Cloud-deployed scalable architecture
+✔ Production-ready authentication system
 
 👥 Team
 
 Neural Ninjas 🚀
-(PIH 2026 Hackathon)
+PIH 2026 Hackathon
